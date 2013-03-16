@@ -36,5 +36,26 @@ describe('graph', function () {
 			})
 			add(1,2).should.equal(3)
 		})
+
+		it('should maintain order', function () {
+			var divide = graph({
+				c: function(a,b){
+					return a / b
+				}
+			})
+			divide(2,1).should.equal(2)
+		})
+
+		it('should maintain order when input split over several functions', function () {
+			var inc_divide = graph({
+				c: function(a, d){
+					return d / a
+				},
+				d: function(b){
+					return b + 1
+				}
+			})
+			inc_divide(3,2).should.equal(1)
+		})
 	})
 })
