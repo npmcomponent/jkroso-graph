@@ -9,8 +9,7 @@ var toposort = require('toposort')
  */
 
 module.exports = function(graph){
-	var deps = extractDeps(graph)
-	deps = toposort(deps)
+	var deps = toposort(makeEdges(graph))
 	return compile(graph, deps)
 }
 
@@ -22,7 +21,7 @@ function compile(graph, deps){
 	while (i--) {
 		var dep = deps[i]
 		if (dep in graph) {
-			var params = extractParams(graph[dep]).join()
+			var params = graph[dep].toString().match(/\((.*)\)/)[1]
 			src += '  var '+dep+' = $'+dep+'('+params+')\n'
 			last = dep
 		} else {
@@ -42,17 +41,18 @@ function vars(graph){
 	return src
 }
 
-function extractDeps(graph){
-	var deps = []
+function makeEdges(graph){
+	var edges = []
 	for (var p in graph) {
-		var params = extractParams(graph[p])
-		deps.push([p].concat(params))
+		params(graph[p]).forEach(function(dep){
+			edges.push([p, dep])
+		})
 	}
-	return deps
+	return edges
 }
 
-function extractParams(fn){
-	fn = fn.toString()
-	var params = fn.match(/\((.*)\)/)[1]
-	return params.split(/ *, */)
+function params(fn){
+	return fn.toString()
+		.match(/\((.*)\)/)[1]
+		.split(/ *, */)
 }
