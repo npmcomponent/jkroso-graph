@@ -21,8 +21,17 @@ function compile(graph, deps){
 	while (i--) {
 		var dep = deps[i]
 		if (dep in graph) {
-			var params = graph[dep].toString().match(/\((.*)\)/)[1]
-			src += '  var '+dep+' = $'+dep+'('+params+')\n'
+			var fn = graph[dep].toString()
+			var params = fn.match(/\((.*)\)/)[1]
+			if (usesThis(fn)) {
+				src += '  var '+dep+' = $'+dep+'.call(this'
+				if ((/\w/).test(params)) {
+					src += ',' + params
+				}
+				src += ')\n'
+			} else {
+				src += '  var '+dep+' = $'+dep+'('+params+')\n'
+			}
 			last = dep
 		} else {
 			input.push(dep)
@@ -31,6 +40,10 @@ function compile(graph, deps){
 	src += '  return '+last+'\n'
 	src = 'function('+input.join()+'){\n'+src+'}'
 	return eval(vars(graph) + '('+src+')')
+}
+
+function usesThis(fn){
+	return (/\bthis\b/).test(fn)
 }
 
 function vars(graph){

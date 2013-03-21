@@ -58,4 +58,18 @@ describe('graph', function () {
 			inc_divide(3,2).should.equal(1)
 		})
 	})
+
+	describe('context', function () {
+		it('`this` should be useful', function () {
+			var obj = {
+				inc: graph({
+					result: function(by){
+						return this.value + by
+					}
+				}),
+				value: 1
+			}
+			obj.inc(5).should.equal(6)
+		})
+	})
 })
