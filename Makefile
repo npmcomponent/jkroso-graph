@@ -1,6 +1,6 @@
 EXPORT= graph
-GRAPH= node_modules/.bin/sourcegraph.js src/index.js -p javascript,nodeish
-BIGFILE= node_modules/.bin/bigfile.js -p javascript --export $(EXPORT)
+GRAPH= node_modules/sourcegraph/bin/sourcegraph.js src/index.js -p javascript,nodeish
+BIGFILE= node_modules/bigfile/bin/bigfile.js -p javascript --export $(EXPORT)
 REPORTER= spec
 
 all: test/built.js test
@@ -15,16 +15,16 @@ dist/%.js: dist
 	@$(GRAPH) | $(BIGFILE) > $@
 
 test:
-	@node_modules/.bin/mocha test/*.test.js -R $(REPORTER)
+	@node_modules/mocha/bin/mocha test/*.test.js -R $(REPORTER)
 
 clean:
 	@rm -rf dist
 	@rm -rf tests/built.js
 
 test/built.js: src/* test/*
-	@node_modules/.bin/sourcegraph.js test/browser.js \
+	@node_modules/sourcegraph/bin/sourcegraph.js test/browser.js \
 		--plugins mocha,nodeish,javascript \
-		| node_modules/.bin/bigfile.js \
+		| node_modules/bigfile/bin/bigfile.js \
 		 	--export null \
 		 	--plugins nodeish,javascript > $@
 
