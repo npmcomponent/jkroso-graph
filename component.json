@@ -5,11 +5,10 @@
   "version": "0.1.0",
   "keywords": ["control-flow","composition","function","compose","graph"],
   "dependencies": {
-    "marcelklehr/toposort": "*"
+    "marcelklehr/toposort": "0.2.9"
   },
-  "main": "src/index.js",
   "scripts": [
-	  "src/index.js"
+	  "index.js"
   ],
   "styles":[],
   "license": "MIT"

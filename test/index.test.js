@@ -1,6 +1,6 @@
 
 var should = require('chai').should()
-  , graph = require('../src')
+  , graph = require('..')
 
 describe('graph', function () {
 	it('should compile a graph with no input', function () {

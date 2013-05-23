@@ -1,5 +1,5 @@
 
-var graph = require('../src')
+var graph = require('..')
 
 var ib = graph({
 	inc: function(a){
