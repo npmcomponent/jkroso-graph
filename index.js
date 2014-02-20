@@ -1,5 +1,5 @@
 
-var toposort = require('toposort')
+var toposort = require('marcelklehr-toposort')
 
 /**
  * graph
